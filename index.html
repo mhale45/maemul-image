@@ -1,16 +1,20 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>백억지도 매물 뷰어</title>
     <!-- Google Fonts: Inter & Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
-            --primary-bg: #0f172a; /* Sleek dark blue */
+            --primary-bg: #0f172a;
+            /* Sleek dark blue */
             --card-bg: rgba(30, 41, 59, 0.7);
-            --accent: #38bdf8; /* Sky blue accent */
+            --accent: #38bdf8;
+            /* Sky blue accent */
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --glass-border: rgba(255, 255, 255, 0.1);
@@ -25,7 +29,7 @@
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--primary-bg);
-            background-image: 
+            background-image:
                 radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.15) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%);
             color: var(--text-primary);
@@ -43,8 +47,15 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         header {
@@ -159,11 +170,19 @@
 
         /* Mobile adjustments */
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .info-section { flex-direction: column; align-items: flex-start; gap: 20px; }
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .info-section {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="container">
@@ -177,22 +196,6 @@
                 <!-- SCAPER_IMAGE_URL Placeholder -->
                 <img id="main-image" src="https://baikuk.com/gallery/view/528888" alt="매물 이미지">
             </div>
-
-            <div class="info-section">
-                <div class="detail">
-                    <span class="label">대상 매물</span>
-                    <span class="value">금릉동 쇠재마을 배후세대多</span>
-                </div>
-                <div class="detail">
-                    <span class="label">동기화 시간</span>
-                    <span class="value">2026-03-31 07:56:19</span>
-                </div>
-                <div class="actions">
-                    <a href="https://baikuk.com/item/view/27852" target="_blank" class="refresh-button">
-                        원문 방문하기 ↗
-                    </a>
-                </div>
-            </div>
         </div>
 
         <footer>
@@ -202,4 +205,5 @@
     </div>
 
 </body>
+
 </html>
