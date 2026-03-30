@@ -42,6 +42,10 @@
             gap: 20px;
         }
 
+        header {
+            text-align: center;
+        }
+
         header h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 2.2rem;
@@ -49,8 +53,104 @@
             text-align: center;
             background: linear-gradient(to right, #38bdf8, #818cf8);
             -webkit-background-clip: text;
-            background-clip: text; /* Lint fix */
+            background-clip: text;
             -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form {
+            display: flex;
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .search-form:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 15px 20px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .search-btn {
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            padding: 0 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-btn:hover {
+            background: #0ea5e9;
+        }
+
+        /* Status & Action Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            padding: 5px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-weight: 600;
+        }
+
+        .original-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+
+        .original-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            color: var(--text-secondary);
         }
 
         /* Slider Styles */
@@ -140,22 +240,51 @@
             <h1>BAI KUK VIEW</h1>
         </header>
 
-        <div class="slider-wrapper">
-            <div class="slider-container" id="slider">
-                {{IMAGES}}
-            </div>
-            
-            <button class="nav-btn prev-btn" id="prev">‹</button>
-            <button class="nav-btn next-btn" id="next">›</button>
-            
-            <div class="slider-info" id="counter">1 / 1</div>
+        <div class="search-container">
+            <form class="search-form" action="/" method="GET">
+                <input type="text" name="id" class="search-input" placeholder="매물 번호를 입력하세요 (예: 27852)" value="{{ item_id if item_id else '' }}">
+                <button type="submit" class="search-btn">검색</button>
+            </form>
         </div>
 
+        {% if images %}
+            <div class="status-bar">
+                <span class="status-badge">매물: <strong>{{ item_id }}</strong> (총 {{ images|length }}장)</span>
+                <a href="https://baikuk.com/item/view/{{ item_id }}" target="_blank" class="original-link">
+                    원문 보기 ↗
+                </a>
+            </div>
+
+            <div class="slider-wrapper">
+                <div class="slider-container" id="slider">
+                    {% for img in images %}
+                        <div class="slide"><img src="{{ img }}" alt="매물 {{ item_id }} 이미지 {{ loop.index }}"></div>
+                    {% endfor %}
+                </div>
+                
+                <button class="nav-btn prev-btn" id="prev">‹</button>
+                <button class="nav-btn next-btn" id="next">›</button>
+                
+                <div class="slider-info" id="counter">1 / {{ images|length }}</div>
+            </div>
+        {% elif item_id %}
+            <!-- 검색 결과 없음 -->
+            <div class="empty-state">
+                <p>⚠️ 매물 번호 <strong>{{ item_id }}</strong>에 해당하는 요소를 찾지 못했거나 이미지가 없습니다.</p>
+            </div>
+        {% else %}
+            <!-- 검색 전 기본 화면 -->
+            <div class="empty-state">
+                <p>검색창에 백억지도 매물 번호를 입력하여 실시간 이미지를 확인해보세요.</p>
+            </div>
+        {% endif %}
+
         <footer>
-            <p>마지막 업데이트: {{LAST_UPDATED}}</p>
+            <p>Made with Python & Flask</p>
         </footer>
     </div>
 
+    {% if images %}
     <script>
         const slider = document.getElementById('slider');
         const slides = slider.children;
@@ -199,5 +328,6 @@
         }
         updateSlider();
     </script>
+    {% endif %}
 </body>
 </html>

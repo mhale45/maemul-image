@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BAI KUK VIEW</title>
     <!-- Google Fonts: Inter & Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary-bg: #0f172a;
@@ -49,7 +51,8 @@
             text-align: center;
             background: linear-gradient(to right, #38bdf8, #818cf8);
             -webkit-background-clip: text;
-            background-clip: text; /* Lint fix */
+            background-clip: text;
+            /* Lint fix */
             -webkit-text-fill-color: transparent;
         }
 
@@ -110,8 +113,13 @@
             background: rgba(56, 189, 248, 0.8);
         }
 
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
+        .prev-btn {
+            left: 15px;
+        }
+
+        .next-btn {
+            right: 15px;
+        }
 
         /* Counter/Dots */
         .slider-info {
@@ -134,6 +142,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -142,21 +151,17 @@
 
         <div class="slider-wrapper">
             <div class="slider-container" id="slider">
-                            <div class="slide"><img src="https://baikuk.com/gallery/view/528888" alt="매물 이미지"></div>
-            <div class="slide"><img src="https://baikuk.com/gallery/view/528889" alt="매물 이미지"></div>
-            <div class="slide"><img src="https://baikuk.com/gallery/view/528890" alt="매물 이미지"></div>
+                <div class="slide"><img src="https://baikuk.com/gallery/view/528888" alt="매물 이미지"></div>
+                <div class="slide"><img src="https://baikuk.com/gallery/view/528889" alt="매물 이미지"></div>
+                <div class="slide"><img src="https://baikuk.com/gallery/view/528890" alt="매물 이미지"></div>
 
             </div>
-            
+
             <button class="nav-btn prev-btn" id="prev">‹</button>
             <button class="nav-btn next-btn" id="next">›</button>
-            
+
             <div class="slider-info" id="counter">1 / 1</div>
         </div>
-
-        <footer>
-            <p>마지막 업데이트: 2026-03-31 08:36:21</p>
-        </footer>
     </div>
 
     <script>
@@ -166,13 +171,13 @@
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
         const counter = document.getElementById('counter');
-        
+
         let currentIdx = 0;
 
         function updateSlider() {
             slider.style.transform = `translateX(-${currentIdx * 100}%)`;
             counter.innerText = `${currentIdx + 1} / ${total}`;
-            
+
             // Hide buttons if at boundaries
             prevBtn.style.opacity = currentIdx === 0 ? '0' : '1';
             prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
@@ -203,4 +208,5 @@
         updateSlider();
     </script>
 </body>
+
 </html>
