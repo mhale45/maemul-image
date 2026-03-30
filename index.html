@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>백억지도 매물 뷰어</title>
+    <title>BAI KUK VIEW</title>
     <!-- Google Fonts: Inter & Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-bg: #0f172a;
-            /* Sleek dark blue */
             --card-bg: rgba(30, 41, 59, 0.7);
             --accent: #38bdf8;
-            /* Sky blue accent */
             --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --glass-border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -42,166 +36,171 @@
 
         .container {
             width: 100%;
-            max-width: 900px;
-            animation: fadeIn 1s ease-out;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        h1 {
+        header h1 {
             font-family: 'Outfit', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
-            margin-bottom: 10px;
+            text-align: center;
             background: linear-gradient(to right, #38bdf8, #818cf8);
             -webkit-background-clip: text;
+            background-clip: text; /* Lint fix */
             -webkit-text-fill-color: transparent;
         }
 
-        p.subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-        }
-
-        .main-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-
-        .main-card:hover {
-            transform: scale(1.01);
-        }
-
-        .image-container {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border-radius: 16px;
-            overflow: hidden;
-            background: #1e293b;
+        /* Slider Styles */
+        .slider-wrapper {
             position: relative;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
         }
 
-        .image-container img {
+        .slider-container {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+        }
+
+        .slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .slide img {
+            width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
             display: block;
-            transition: opacity 0.5s ease;
         }
 
-        .info-section {
-            margin-top: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .info-section .detail {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .info-section .label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-secondary);
-        }
-
-        .info-section .value {
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
-
-        .refresh-button {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
+        /* Navigation Buttons */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
             color: white;
-            padding: 8px 16px;
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
             cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-            text-decoration: none;
-            display: inline-flex;
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 8px;
+            font-size: 1.5rem;
+            transition: all 0.2s;
+            z-index: 10;
         }
 
-        .refresh-button:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
+        .nav-btn:hover {
+            background: rgba(56, 189, 248, 0.8);
+        }
+
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        /* Counter/Dots */
+        .slider-info {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(5px);
         }
 
         footer {
-            margin-top: 40px;
             text-align: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        /* Mobile adjustments */
-        @media (max-width: 600px) {
-            h1 {
-                font-size: 1.8rem;
-            }
-
-            .info-section {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
+            font-size: 0.8rem;
+            opacity: 0.5;
         }
     </style>
 </head>
-
 <body>
-
     <div class="container">
         <header>
             <h1>BAI KUK VIEW</h1>
         </header>
 
-        <div class="main-card">
-            <div class="image-container">
-                <!-- SCAPER_IMAGE_URL Placeholder -->
-                <img id="main-image" src="https://baikuk.com/gallery/view/528888" alt="매물 이미지">
+        <div class="slider-wrapper">
+            <div class="slider-container" id="slider">
+                            <div class="slide"><img src="https://baikuk.com/gallery/view/528888" alt="매물 이미지"></div>
+            <div class="slide"><img src="https://baikuk.com/gallery/view/528889" alt="매물 이미지"></div>
+            <div class="slide"><img src="https://baikuk.com/gallery/view/528890" alt="매물 이미지"></div>
+
             </div>
+            
+            <button class="nav-btn prev-btn" id="prev">‹</button>
+            <button class="nav-btn next-btn" id="next">›</button>
+            
+            <div class="slider-info" id="counter">1 / 1</div>
         </div>
 
         <footer>
-            <p>© 2026 BAIKUK MAP Automator. Built with Python & GitHub Actions.</p>
+            <p>마지막 업데이트: 2026-03-31 08:36:21</p>
         </footer>
     </div>
 
-</body>
+    <script>
+        const slider = document.getElementById('slider');
+        const slides = slider.children;
+        const total = slides.length;
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const counter = document.getElementById('counter');
+        
+        let currentIdx = 0;
 
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIdx * 100}%)`;
+            counter.innerText = `${currentIdx + 1} / ${total}`;
+            
+            // Hide buttons if at boundaries
+            prevBtn.style.opacity = currentIdx === 0 ? '0' : '1';
+            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
+            nextBtn.style.opacity = currentIdx === total - 1 ? '0' : '1';
+            nextBtn.style.pointerEvents = currentIdx === total - 1 ? 'none' : 'auto';
+        }
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIdx < total - 1) {
+                currentIdx++;
+                updateSlider();
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIdx > 0) {
+                currentIdx--;
+                updateSlider();
+            }
+        });
+
+        // Initialize
+        if (total <= 1) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            counter.style.display = 'none';
+        }
+        updateSlider();
+    </script>
+</body>
 </html>

@@ -18,31 +18,31 @@ def scrape_baikuk():
 
     tree = html.fromstring(response.content)
     
-    # 엽XPath: //*[@id="slide_s"]/div[1]/div[1]/div
-    # 실제로는 슬라이더 내부의 div 요소들을 가리킵니다.
-    xpath_query = '//*[@id="slide_s"]/div[1]/div[1]/div'
+    # 이미지 추출을 위해 'bg_img' 클래스를 가진 요소를 찾습니다.
+    # 사용자가 제공한 XPath 구조를 포함하여 더 유연하게 탐색합니다.
+    xpath_query = '//*[@id="slide_s"]//div[contains(@class, "bg_img")]'
     elements = tree.xpath(xpath_query)
     
-    image_url = ""
-    if elements:
-        # style 속성에서 background-image: url('...') 추출
-        style = elements[0].get('style', '')
+    image_urls = []
+    for el in elements:
+        style = el.get('style', '')
         match = re.search(r"url\(['\"]?(.*?)['\"]?\)", style)
         if match:
             path = match.group(1)
-            if path.startswith('/'):
-                image_url = "https://baikuk.com" + path
-            else:
-                image_url = path
-            print(f"Found image URL: {image_url}")
-        else:
-            print("No background-image found in style attribute.")
-    else:
-        print("Required XPath element not found.")
+            full_url = "https://baikuk.com" + path if path.startswith('/') else path
+            if full_url not in image_urls: # 중복 제거 (Slick 클론 방지)
+                image_urls.append(full_url)
 
-    # 추출 실패 시 기본 이미지 적용
-    if not image_url:
-        image_url = "https://via.placeholder.com/1200x800?text=Image+Not+Found"
+    print(f"Found {len(image_urls)} unique images.")
+
+    # 추출 실패 시 처리
+    if not image_urls:
+         image_urls = ["https://via.placeholder.com/1200x800?text=No+Images+Found"]
+
+    # 이미지 HTML 생성 (슬라이더 구조)
+    images_html = ""
+    for url in image_urls:
+        images_html += f'            <div class="slide"><img src="{url}" alt="매물 이미지"></div>\n'
 
     # 템플릿 읽기
     template_path = "index.template.html"
@@ -55,14 +55,14 @@ def scrape_baikuk():
 
     # 치환
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    content = content.replace("{{IMAGE_URL}}", image_url)
+    content = content.replace("{{IMAGES}}", images_html)
     content = content.replace("{{LAST_UPDATED}}", now)
 
     # index.html 저장
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(content)
     
-    print("Successfully updated index.html")
+    print("Successfully updated index.html with all images.")
 
 if __name__ == "__main__":
     scrape_baikuk()
