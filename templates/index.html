@@ -244,18 +244,13 @@
 
 <body>
     <div class="container">
+        {% if not images %}
         <header>
             <h1>BAI KUK VIEW</h1>
         </header>
+        {% endif %}
 
         {% if images %}
-        <div class="status-bar">
-            <span class="status-badge">매물: <strong>{{ item_id }}</strong> (총 {{ images|length }}장)</span>
-            <a href="https://baikuk.com/item/view/{{ item_id }}" target="_blank" class="original-link">
-                원문 보기 ↗
-            </a>
-        </div>
-
         <div class="slider-wrapper">
             <div class="slider-container" id="slider">
                 {% for img in images %}
@@ -278,6 +273,7 @@
         <div class="empty-state">
             <p>매물 번호를 입력하여 이미지를 확인해보세요.</p>
         </div>
+        {% endif %}
     </div>
 
     {% if images %}
