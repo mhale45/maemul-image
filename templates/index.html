@@ -133,6 +133,59 @@
             font-weight: 600;
         }
 
+        /* Info Panel */
+        .info-panel {
+            width: fit-content;
+            max-width: 95%;
+            margin: 0 auto 25px auto;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 100px;
+            padding: 10px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 15px;
+            z-index: 1000;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .info-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+
+        .info-value.accent {
+            color: var(--accent);
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         /* Image List Styles */
         .image-list {
             display: flex;
@@ -202,10 +255,13 @@
     </style>
 </head>
 
-<body {% if images %}class="viewer-mode" {% endif %}>
+<body {% if item_data and item_data.images %}class="viewer-mode" {% endif %}>
     <div class="container">
 
-        {% if not images %}
+        {% if not item_data or not item_data.images %}
+        <header>
+            <h1>BAI KUK VIEW</h1>
+        </header>
         <div class="search-container">
             <form action="/" method="GET" class="search-form">
                 <input type="text" name="id" class="search-input" placeholder="매물 번호를 입력하세요 (예: 528888)"
@@ -215,15 +271,39 @@
         </div>
         {% endif %}
 
-        {% if images %}
+        {% if item_data and item_data.images %}
+        <!-- Property Info Panel -->
+        <div class="info-panel">
+            <div class="info-item">
+                <span class="info-label">매물번호</span>
+                <span class="info-value">{{ item_data.id }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">보증금</span>
+                <span class="info-value accent">{{ item_data.deposit if item_data.deposit else '-' }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">월세</span>
+                <span class="info-value accent">{{ item_data.rent if item_data.rent else '-' }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">전용면적</span>
+                <span class="info-value">{{ item_data.area if item_data.area else '-' }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">층정보</span>
+                <span class="info-value">{{ item_data.floor if item_data.floor else '-' }}</span>
+            </div>
+        </div>
 
         <div class="image-list">
-            {% for img in images %}
+            {% for img in item_data.images %}
             <div class="image-item">
                 <img src="{{ img }}" alt="매물 {{ item_id }} 이미지 {{ loop.index }}" loading="lazy">
             </div>
             {% endfor %}
         </div>
+
         {% elif item_id %}
         <!-- 검색 결과 없음 -->
         <div class="empty-state">
