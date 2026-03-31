@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BAI KUK VIEW</title>
     <!-- Google Fonts: Inter & Outfit -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Outfit:wght@300;600;800&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --primary-bg: #0f172a;
@@ -210,8 +212,13 @@
             background: rgba(56, 189, 248, 0.8);
         }
 
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
+        .prev-btn {
+            left: 15px;
+        }
+
+        .next-btn {
+            right: 15px;
+        }
 
         /* Counter/Dots */
         .slider-info {
@@ -234,49 +241,43 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <header>
             <h1>BAI KUK VIEW</h1>
         </header>
 
-        <div class="search-container">
-            <form class="search-form" action="/" method="GET">
-                <input type="text" name="id" class="search-input" placeholder="매물 번호를 입력하세요 (예: 27852)" value="{{ item_id if item_id else '' }}">
-                <button type="submit" class="search-btn">검색</button>
-            </form>
+        {% if images %}
+        <div class="status-bar">
+            <span class="status-badge">매물: <strong>{{ item_id }}</strong> (총 {{ images|length }}장)</span>
+            <a href="https://baikuk.com/item/view/{{ item_id }}" target="_blank" class="original-link">
+                원문 보기 ↗
+            </a>
         </div>
 
-        {% if images %}
-            <div class="status-bar">
-                <span class="status-badge">매물: <strong>{{ item_id }}</strong> (총 {{ images|length }}장)</span>
-                <a href="https://baikuk.com/item/view/{{ item_id }}" target="_blank" class="original-link">
-                    원문 보기 ↗
-                </a>
+        <div class="slider-wrapper">
+            <div class="slider-container" id="slider">
+                {% for img in images %}
+                <div class="slide"><img src="{{ img }}" alt="매물 {{ item_id }} 이미지 {{ loop.index }}"></div>
+                {% endfor %}
             </div>
 
-            <div class="slider-wrapper">
-                <div class="slider-container" id="slider">
-                    {% for img in images %}
-                        <div class="slide"><img src="{{ img }}" alt="매물 {{ item_id }} 이미지 {{ loop.index }}"></div>
-                    {% endfor %}
-                </div>
-                
-                <button class="nav-btn prev-btn" id="prev">‹</button>
-                <button class="nav-btn next-btn" id="next">›</button>
-                
-                <div class="slider-info" id="counter">1 / {{ images|length }}</div>
-            </div>
+            <button class="nav-btn prev-btn" id="prev">‹</button>
+            <button class="nav-btn next-btn" id="next">›</button>
+
+            <div class="slider-info" id="counter">1 / {{ images|length }}</div>
+        </div>
         {% elif item_id %}
-            <!-- 검색 결과 없음 -->
-            <div class="empty-state">
-                <p>⚠️ 매물 번호 <strong>{{ item_id }}</strong>에 해당하는 요소를 찾지 못했거나 이미지가 없습니다.</p>
-            </div>
+        <!-- 검색 결과 없음 -->
+        <div class="empty-state">
+            <p>⚠️ 매물 번호 <strong>{{ item_id }}</strong>에 해당하는 요소를 찾지 못했거나 이미지가 없습니다.</p>
+        </div>
         {% else %}
-            <!-- 검색 전 기본 화면 -->
-            <div class="empty-state">
-                <p>검색창에 백억지도 매물 번호를 입력하여 실시간 이미지를 확인해보세요.</p>
-            </div>
+        <!-- 검색 전 기본 화면 -->
+        <div class="empty-state">
+            <p>검색창에 백억지도 매물 번호를 입력하여 실시간 이미지를 확인해보세요.</p>
+        </div>
         {% endif %}
 
         <footer>
@@ -292,13 +293,13 @@
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
         const counter = document.getElementById('counter');
-        
+
         let currentIdx = 0;
 
         function updateSlider() {
             slider.style.transform = `translateX(-${currentIdx * 100}%)`;
             counter.innerText = `${currentIdx + 1} / ${total}`;
-            
+
             // Hide buttons if at boundaries
             prevBtn.style.opacity = currentIdx === 0 ? '0' : '1';
             prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
@@ -330,4 +331,5 @@
     </script>
     {% endif %}
 </body>
+
 </html>
