@@ -14,6 +14,7 @@
             --card-bg: rgba(30, 41, 59, 0.7);
             --accent: #38bdf8;
             --text-primary: #f8fafc;
+            --text-secondary: rgba(255, 255, 255, 0.6);
         }
 
         * {
@@ -31,9 +32,10 @@
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             padding: 20px;
+            overflow-x: hidden;
         }
 
         .container {
@@ -46,18 +48,17 @@
 
         header {
             text-align: center;
+            margin-bottom: 20px;
         }
 
         header h1 {
             font-family: 'Outfit', sans-serif;
             font-size: 2.2rem;
             font-weight: 800;
-            text-align: center;
             background: linear-gradient(to right, #38bdf8, #818cf8);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
         }
 
         /* Search Bar */
@@ -132,17 +133,34 @@
             font-weight: 600;
         }
 
-        .original-link {
-            color: var(--text-secondary);
-            text-decoration: none;
+        /* Image List Styles */
+        .image-list {
             display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: color 0.2s;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
         }
 
-        .original-link:hover {
-            color: var(--text-primary);
+        .image-item {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .image-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
         }
 
         /* Empty State */
@@ -155,189 +173,64 @@
             color: var(--text-secondary);
         }
 
-        /* Slider Styles */
-        .slider-wrapper {
-            position: relative;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-        }
-
-        .slider-container {
-            display: flex;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 100%;
-        }
-
-        .slide {
-            min-width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-        }
-
-        .slide img {
-            width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
-            display: block;
-        }
-
-        /* Navigation Buttons */
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 2.8rem;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 10;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .nav-btn:hover {
-            background: var(--accent);
-            transform: translateY(-50%) scale(1.1);
-            border-color: #fff;
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
-        }
-
-        .nav-btn:active {
-            transform: translateY(-50%) scale(0.95);
-        }
-
-        .prev-btn {
-            left: 35px;
-        }
-
-        .next-btn {
-            right: 35px;
-        }
-
-        /* Counter/Dots */
-        .slider-info {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            backdrop-filter: blur(5px);
-        }
-
         footer {
+            margin-top: 40px;
             text-align: center;
             font-size: 0.8rem;
             opacity: 0.5;
         }
 
-        /* Full Screen Mode & Mobile Optimization */
-        body.full-screen-mode {
-            padding: 0 !important;
-            margin: 0 !important;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* Full Screen Mode for images only */
+        body.viewer-mode {
+            padding: 10px;
             background: #000;
         }
 
-        body.full-screen-mode .container {
-            max-width: 100% !important;
-            width: 100% !important;
-            height: 100vh;
-            gap: 0;
-            padding: 0;
-        }
-
-        body.full-screen-mode .slider-wrapper {
-            border-radius: 0;
-            border: none;
-            box-shadow: none;
-            height: 100vh;
-            background: #000;
-        }
-
-        body.full-screen-mode .slider-container,
-        body.full-screen-mode .slide {
-            height: 100vh;
-        }
-
-        body.full-screen-mode .slide img {
-            max-height: 100vh;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* Mobile-Friendly Navigation */
-        body.full-screen-mode .nav-btn {
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+        body.viewer-mode .container {
+            max-width: 1000px;
         }
 
         @media (max-width: 600px) {
-            body.full-screen-mode .nav-btn,
-            .nav-btn {
-                width: 60px;
-                height: 60px;
-                font-size: 2.2rem;
-                background: rgba(0, 0, 0, 0.4);
+            body {
+                padding: 10px;
             }
-            .prev-btn { left: 20px; }
-            .next-btn { right: 20px; }
-        }
 
-        body.full-screen-mode .slider-info {
-            bottom: 25px;
-            font-weight: 600;
+            .image-item {
+                border-radius: 12px;
+            }
         }
     </style>
 </head>
 
-<body {% if images %}class="full-screen-mode"{% endif %}>
+<body {% if images %}class="viewer-mode" {% endif %}>
     <div class="container">
+
         {% if not images %}
-        <header>
-            <h1>BAI KUK VIEW</h1>
-        </header>
+        <div class="search-container">
+            <form action="/" method="GET" class="search-form">
+                <input type="text" name="id" class="search-input" placeholder="매물 번호를 입력하세요 (예: 528888)"
+                    value="{{ item_id }}">
+                <button type="submit" class="search-btn">검색</button>
+            </form>
+        </div>
         {% endif %}
 
         {% if images %}
-        <div class="slider-wrapper">
-            <div class="slider-container" id="slider">
-                {% for img in images %}
-                <div class="slide"><img src="{{ img }}" alt="매물 {{ item_id }} 이미지 {{ loop.index }}"></div>
-                {% endfor %}
+
+        <div class="image-list">
+            {% for img in images %}
+            <div class="image-item">
+                <img src="{{ img }}" alt="매물 {{ item_id }} 이미지 {{ loop.index }}" loading="lazy">
             </div>
-
-            <button class="nav-btn prev-btn" id="prev">‹</button>
-            <button class="nav-btn next-btn" id="next">›</button>
-
-            <div class="slider-info" id="counter">1 / {{ images|length }}</div>
+            {% endfor %}
         </div>
         {% elif item_id %}
         <!-- 검색 결과 없음 -->
         <div class="empty-state">
             <p>⚠️ 매물 번호 <strong>{{ item_id }}</strong>에 해당하는 요소를 찾지 못했거나 이미지가 없습니다.</p>
+            <div style="margin-top: 20px;">
+                <a href="/" style="color: var(--accent); text-decoration: none; font-weight: 600;">메인으로 돌아가기</a>
+            </div>
         </div>
         {% else %}
         <!-- 검색 전 기본 화면 -->
@@ -345,43 +238,11 @@
             <p>매물 번호를 입력하여 이미지를 확인해보세요.</p>
         </div>
         {% endif %}
+
+        <footer>
+            <p>&copy; 2026 BAI KUK VIEW. All rights reserved.</p>
+        </footer>
     </div>
-
-    {% if images %}
-    <script>
-        const slider = document.getElementById('slider');
-        const slides = slider.children;
-        const total = slides.length;
-        const prevBtn = document.getElementById('prev');
-        const nextBtn = document.getElementById('next');
-        const counter = document.getElementById('counter');
-
-        let currentIdx = 0;
-
-        function updateSlider() {
-            slider.style.transform = `translateX(-${currentIdx * 100}%)`;
-            counter.innerText = `${currentIdx + 1} / ${total}`;
-        }
-
-        nextBtn.addEventListener('click', () => {
-            currentIdx = (currentIdx + 1) % total;
-            updateSlider();
-        });
-
-        prevBtn.addEventListener('click', () => {
-            currentIdx = (currentIdx - 1 + total) % total;
-            updateSlider();
-        });
-
-        // Initialize
-        if (total <= 1) {
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
-            counter.style.display = 'none';
-        }
-        updateSlider();
-    </script>
-    {% endif %}
 </body>
 
 </html>

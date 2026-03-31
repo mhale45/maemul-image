@@ -31,7 +31,7 @@
             color: var(--text-primary);
             min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
             padding: 20px;
         }
@@ -52,93 +52,55 @@
             background: linear-gradient(to right, #38bdf8, #818cf8);
             -webkit-background-clip: text;
             background-clip: text;
-            /* Lint fix */
             -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
         }
 
-        /* Slider Styles */
-        .slider-wrapper {
-            position: relative;
+        /* Image List Styles */
+        .image-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .image-item {
             background: var(--card-bg);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
         }
 
-        .slider-container {
-            display: flex;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .image-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56, 189, 248, 0.3);
+        }
+
+        .image-item img {
             width: 100%;
-        }
-
-        .slide {
-            min-width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #000;
-        }
-
-        .slide img {
-            width: 100%;
-            max-height: 80vh;
-            object-fit: contain;
+            height: auto;
             display: block;
-        }
-
-        /* Navigation Buttons */
-        .nav-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.3);
-            border: none;
-            color: white;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.5rem;
-            transition: all 0.2s;
-            z-index: 10;
-        }
-
-        .nav-btn:hover {
-            background: rgba(56, 189, 248, 0.8);
-        }
-
-        .prev-btn {
-            left: 15px;
-        }
-
-        .next-btn {
-            right: 15px;
-        }
-
-        /* Counter/Dots */
-        .slider-info {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
-            backdrop-filter: blur(5px);
+            object-fit: contain;
         }
 
         footer {
+            margin-top: 40px;
             text-align: center;
             font-size: 0.8rem;
             opacity: 0.5;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .image-item {
+                border-radius: 12px;
+            }
         }
     </style>
 </head>
@@ -149,64 +111,12 @@
             <h1>BAI KUK VIEW</h1>
         </header>
 
-        <div class="slider-wrapper">
-            <div class="slider-container" id="slider">
-                <div class="slide"><img src="https://baikuk.com/gallery/view/528888" alt="매물 이미지"></div>
-                <div class="slide"><img src="https://baikuk.com/gallery/view/528889" alt="매물 이미지"></div>
-                <div class="slide"><img src="https://baikuk.com/gallery/view/528890" alt="매물 이미지"></div>
-
-            </div>
-
-            <button class="nav-btn prev-btn" id="prev">‹</button>
-            <button class="nav-btn next-btn" id="next">›</button>
-
-            <div class="slider-info" id="counter">1 / 1</div>
+        <div class="image-list">
+            <div class="image-item"><img src="https://baikuk.com/gallery/view/528888" alt="매물 이미지" loading="lazy"></div>
+            <div class="image-item"><img src="https://baikuk.com/gallery/view/528889" alt="매물 이미지" loading="lazy"></div>
+            <div class="image-item"><img src="https://baikuk.com/gallery/view/528890" alt="매물 이미지" loading="lazy"></div>
         </div>
     </div>
-
-    <script>
-        const slider = document.getElementById('slider');
-        const slides = slider.children;
-        const total = slides.length;
-        const prevBtn = document.getElementById('prev');
-        const nextBtn = document.getElementById('next');
-        const counter = document.getElementById('counter');
-
-        let currentIdx = 0;
-
-        function updateSlider() {
-            slider.style.transform = `translateX(-${currentIdx * 100}%)`;
-            counter.innerText = `${currentIdx + 1} / ${total}`;
-
-            // Hide buttons if at boundaries
-            prevBtn.style.opacity = currentIdx === 0 ? '0' : '1';
-            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
-            nextBtn.style.opacity = currentIdx === total - 1 ? '0' : '1';
-            nextBtn.style.pointerEvents = currentIdx === total - 1 ? 'none' : 'auto';
-        }
-
-        nextBtn.addEventListener('click', () => {
-            if (currentIdx < total - 1) {
-                currentIdx++;
-                updateSlider();
-            }
-        });
-
-        prevBtn.addEventListener('click', () => {
-            if (currentIdx > 0) {
-                currentIdx--;
-                updateSlider();
-            }
-        });
-
-        // Initialize
-        if (total <= 1) {
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
-            counter.style.display = 'none';
-        }
-        updateSlider();
-    </script>
 </body>
 
 </html>
