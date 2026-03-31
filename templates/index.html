@@ -186,6 +186,13 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .info-value.area-accent {
+            background: linear-gradient(to right, #4ade80, #2dd4bf);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
         /* Image List Styles */
         .image-list {
             display: flex;
@@ -251,6 +258,20 @@
             .image-item {
                 border-radius: 12px;
             }
+
+            .info-panel {
+                padding: 10px 20px;
+                gap: 10px 20px;
+                border-radius: 20px;
+            }
+
+            .info-item {
+                gap: 5px;
+            }
+
+            .info-value {
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
@@ -264,7 +285,7 @@
         </header>
         <div class="search-container">
             <form action="/" method="GET" class="search-form">
-                <input type="text" name="id" class="search-input" placeholder="매물 번호를 입력하세요 (예: 528888)"
+                <input type="text" name="id" class="search-input" placeholder="매물 번호를 입력하세요 (예: 27852)"
                     value="{{ item_id }}">
                 <button type="submit" class="search-btn">검색</button>
             </form>
@@ -279,16 +300,16 @@
                 <span class="info-value">{{ item_data.id }}</span>
             </div>
             <div class="info-item">
+                <span class="info-label">전용면적</span>
+                <span class="info-value area-accent">{{ item_data.area if item_data.area else '-' }}</span>
+            </div>
+            <div class="info-item">
                 <span class="info-label">보증금</span>
                 <span class="info-value accent">{{ item_data.deposit if item_data.deposit else '-' }}</span>
             </div>
             <div class="info-item">
                 <span class="info-label">월세</span>
                 <span class="info-value accent">{{ item_data.rent if item_data.rent else '-' }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">전용면적</span>
-                <span class="info-value">{{ item_data.area if item_data.area else '-' }}</span>
             </div>
             <div class="info-item">
                 <span class="info-label">층정보</span>
