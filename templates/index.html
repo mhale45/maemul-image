@@ -192,32 +192,41 @@
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.3);
-            border: none;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             color: white;
-            width: 44px;
-            height: 44px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             cursor: pointer;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
-            transition: all 0.2s;
+            font-size: 2.8rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 10;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .nav-btn:hover {
-            background: rgba(56, 189, 248, 0.8);
+            background: var(--accent);
+            transform: translateY(-50%) scale(1.1);
+            border-color: #fff;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.6);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-50%) scale(0.95);
         }
 
         .prev-btn {
-            left: 15px;
+            left: 35px;
         }
 
         .next-btn {
-            right: 15px;
+            right: 35px;
         }
 
         /* Counter/Dots */
@@ -239,10 +248,72 @@
             font-size: 0.8rem;
             opacity: 0.5;
         }
+
+        /* Full Screen Mode & Mobile Optimization */
+        body.full-screen-mode {
+            padding: 0 !important;
+            margin: 0 !important;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        body.full-screen-mode .container {
+            max-width: 100% !important;
+            width: 100% !important;
+            height: 100vh;
+            gap: 0;
+            padding: 0;
+        }
+
+        body.full-screen-mode .slider-wrapper {
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
+            height: 100vh;
+            background: #000;
+        }
+
+        body.full-screen-mode .slider-container,
+        body.full-screen-mode .slide {
+            height: 100vh;
+        }
+
+        body.full-screen-mode .slide img {
+            max-height: 100vh;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Mobile-Friendly Navigation */
+        body.full-screen-mode .nav-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            body.full-screen-mode .nav-btn,
+            .nav-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 2.2rem;
+                background: rgba(0, 0, 0, 0.4);
+            }
+            .prev-btn { left: 20px; }
+            .next-btn { right: 20px; }
+        }
+
+        body.full-screen-mode .slider-info {
+            bottom: 25px;
+            font-weight: 600;
+        }
     </style>
 </head>
 
-<body>
+<body {% if images %}class="full-screen-mode"{% endif %}>
     <div class="container">
         {% if not images %}
         <header>
@@ -290,26 +361,16 @@
         function updateSlider() {
             slider.style.transform = `translateX(-${currentIdx * 100}%)`;
             counter.innerText = `${currentIdx + 1} / ${total}`;
-
-            // Hide buttons if at boundaries
-            prevBtn.style.opacity = currentIdx === 0 ? '0' : '1';
-            prevBtn.style.pointerEvents = currentIdx === 0 ? 'none' : 'auto';
-            nextBtn.style.opacity = currentIdx === total - 1 ? '0' : '1';
-            nextBtn.style.pointerEvents = currentIdx === total - 1 ? 'none' : 'auto';
         }
 
         nextBtn.addEventListener('click', () => {
-            if (currentIdx < total - 1) {
-                currentIdx++;
-                updateSlider();
-            }
+            currentIdx = (currentIdx + 1) % total;
+            updateSlider();
         });
 
         prevBtn.addEventListener('click', () => {
-            if (currentIdx > 0) {
-                currentIdx--;
-                updateSlider();
-            }
+            currentIdx = (currentIdx - 1 + total) % total;
+            updateSlider();
         });
 
         // Initialize
