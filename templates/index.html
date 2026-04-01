@@ -226,11 +226,19 @@
         /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            border: 1px dashed rgba(255, 255, 255, 0.2);
+            padding: 100px 20px;
             color: var(--text-secondary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.8;
+            letter-spacing: -0.5px;
+        }
+
+        .empty-state .sub-text {
+            font-size: 0.9rem;
+            margin-top: 10px;
+            opacity: 0.5;
+            font-weight: 400;
         }
 
         footer {
@@ -279,18 +287,7 @@
 <body {% if item_data and item_data.images %}class="viewer-mode" {% endif %}>
     <div class="container">
 
-        {% if not item_data or not item_data.images %}
-        <header>
-            <h1>매물사진</h1>
-        </header>
-        <div class="search-container">
-            <form action="/" method="GET" class="search-form">
-                <input type="text" name="id" class="search-input" placeholder="매물 번호를 입력하세요 (예: 27852)"
-                    value="{{ item_id }}">
-                <button type="submit" class="search-btn">검색</button>
-            </form>
-        </div>
-        {% endif %}
+        {# 기존 헤더 및 검색 UI 제거 #}
 
         {% if item_data and item_data.images %}
         <!-- Property Info Panel -->
@@ -300,16 +297,16 @@
                 <span class="info-value">{{ item_data.id }}</span>
             </div>
             <div class="info-item">
+                <span class="info-label">전용면적</span>
+                <span class="info-value area-accent">{{ item_data.area if item_data.area else '-' }}</span>
+            </div>
+            <div class="info-item">
                 <span class="info-label">보증금</span>
                 <span class="info-value accent">{{ item_data.deposit if item_data.deposit else '-' }}</span>
             </div>
             <div class="info-item">
                 <span class="info-label">월세</span>
                 <span class="info-value accent">{{ item_data.rent if item_data.rent else '-' }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">전용면적</span>
-                <span class="info-value area-accent">{{ item_data.area if item_data.area else '-' }}</span>
             </div>
             <div class="info-item">
                 <span class="info-label">층정보</span>
@@ -325,18 +322,10 @@
             {% endfor %}
         </div>
 
-        {% elif item_id %}
-        <!-- 검색 결과 없음 -->
+        {% elif item_id or not item_data %}
         <div class="empty-state">
-            <p>⚠️ 매물 번호 <strong>{{ item_id }}</strong>에 해당하는 요소를 찾지 못했거나 이미지가 없습니다.</p>
-            <div style="margin-top: 20px;">
-                <a href="/" style="color: var(--accent); text-decoration: none; font-weight: 600;">메인으로 돌아가기</a>
-            </div>
-        </div>
-        {% else %}
-        <!-- 검색 전 기본 화면 -->
-        <div class="empty-state">
-            <p>매물 번호를 입력하여 이미지를 확인해보세요.</p>
+            <p>사진 비공개 매물입니다</p>
+            <p class="sub-text">담당 직원에게 문의주세요</p>
         </div>
         {% endif %}
     </div>
